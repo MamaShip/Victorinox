@@ -45,7 +45,7 @@ class Application_ui(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master.title("Listen's Victorinox")
-        self.master.geometry('389x339')
+        self.master.geometry('589x339')
         self.createWidgets()
  
     def createWidgets(self):
@@ -118,6 +118,14 @@ class Application_ui(Frame):
  #third tab end
  #fourth tab
         self.Tab4 = Frame(self.TabStrip1)
+        self.Tab4Lbl1 = Label(self.Tab4,text = "bin file:")#.grid(row = 1, column = 0)
+        self.Tab4Lbl1.pack()
+        self.Tab4pathEntry = Entry(self.Tab4)#.grid(row = 1, column = 1)
+        self.Tab4pathEntry.pack()
+        self.Tab4ButtonSelect = Button(self.Tab4, text = "Select")#.grid(row = 1, column = 2)
+        self.Tab4ButtonSelect.pack()
+        self.Tab4ButtonConfirm = Button(self.Tab4, text = "Read")#.grid(row = 1, column = 3)
+        self.Tab4ButtonConfirm.pack(side=BOTTOM)
         self.TabStrip1.add(self.Tab4, text='Binary Reader')
  #fourth tab end
  #about tab
@@ -161,7 +169,13 @@ class Application(Application_ui):
         self.Tab3ButtonConfirm['command'] = self.ConfirmFile
 
         self.Tab3ButtonMerge['command'] = self.MergeFile
+
+        # Tab4 var
+        self.Tab4path = StringVar()
+        self.Tab4pathEntry['textvariable'] = self.Tab4path
         
+        self.Tab4ButtonSelect['command'] = self.Tab4selectPath
+        self.Tab4ButtonConfirm['command'] = self.Tab4ReadFile
 #tab1 func
     def toDecimal(self,num_str): # if input is heximal , transform to decimal
         if not num_str:
@@ -208,7 +222,27 @@ class Application(Application_ui):
         output.close()
         self.Tab3FileList = []
         print "done"
-
+#tab4 func
+    def Tab4selectPath(self):
+        path_ = askopenfilename()
+        self.Tab4path.set(path_)
+        
+    def Tab4ReadFile(self):
+        fileName = self.Tab4path.get()
+        print "Read File:" + fileName
+        FileSize = os.path.getsize(fileName)
+        print "file size:",FileSize
+        f = open(fileName,'rb')
+        output = open(fileName+'.txt','w')
+        ll = [0]*32
+        for j in range(FileSize/32):
+            for i in range(32):
+                ll[i]=str(ord(f.read(1)))
+            print j,ll
+            output.write(' '.join(ll)+'\n')
+            #print ll[1]*256+ll[0]
+        f.close()
+        output.close()
  
 if __name__ == "__main__":
     top = Tk()

@@ -65,6 +65,19 @@ class Application(Application_ui):
         self.TabStrip1__Tab1WLNum['textvariable'] = self.Tab1varWL
         self.TabStrip1__Tab1WLNum.bind("<Return>",self.WL2Page)
         
+        # Tab2 var
+        self.Tab2totalBitNum = 32
+        self.Tab2num = [0] * self.Tab2totalBitNum
+        for FrmCnt in range(self.Tab2totalBitNum/4):
+            for i in range(4):
+                self.Tab2ButtonList[4*FrmCnt + i].bind('<Button-1>', self.handlerAdaptor(self.FlipBit,4*FrmCnt + i))
+        self.Tab2var16 = StringVar()
+        self.Tab2e['textvariable'] = self.Tab2var16
+        self.Tab2var16.set("0x00000000")
+        self.Tab2Confirm_Button['command'] = self.hex2bin
+        self.Tab2e.bind("<Return>",self.hex2bin)
+        self.Tab2Clear_Button['command'] = self.clear2zero
+
         # Tab3 var
         self.Tab3path = StringVar()
         self.Tab3FileList = []
@@ -108,6 +121,37 @@ class Application(Application_ui):
         wl = self.toDecimal(self.Tab1varWL.get())
         result = ', '.join(map(str,WL_list[wl]))
         self.Tab1varPage.set(result)
+#tab2 func
+    def FlipBit(self,bit):
+        self.Tab2num[bit] = self.Tab2num[bit] ^ 1
+        print self.Tab2num
+        self.Tab2strvarlist[bit].set(str(self.Tab2num[bit]))
+        binary = "".join(map(str,self.Tab2num))
+        decimal = int(binary,2)
+        self.Tab2var16.set(hex(decimal))
+
+    def handlerAdaptor(self,fun,v):
+        return lambda event, fun=fun, v=v: fun(v)
+
+    def hex2bin(self,event=None):
+        hexadecimal = self.Tab2var16.get()
+        print hexadecimal
+        decimal = int(hexadecimal,16)
+        binary = bin(decimal)[2:]
+        align_loc = self.Tab2totalBitNum - len(binary)
+        for bit in range(self.Tab2totalBitNum):
+            if bit >= align_loc:
+                self.Tab2strvarlist[bit].set(binary[bit - align_loc])
+                self.Tab2num[bit] = int(binary[bit - align_loc])
+            else:
+                self.Tab2strvarlist[bit].set('0')
+                self.Tab2num[bit] = 0
+
+    def clear2zero(self):
+        self.Tab2var16.set("0x0")
+        for bit in range(self.Tab2totalBitNum):
+            self.Tab2strvarlist[bit].set("0")
+            self.Tab2num[bit] = 0
 #tab3 func
     def selectPath(self):
         path_ = askopenfilename()

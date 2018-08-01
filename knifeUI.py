@@ -27,7 +27,7 @@ class Application_ui(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master.title("Listen's Victorinox")
-        self.master.geometry('589x339')
+        self.master.geometry('880x380')
         self.createWidgets()
  
     def createWidgets(self):
@@ -36,7 +36,7 @@ class Application_ui(Frame):
         self.style = Style()
  
         self.TabStrip1 = Notebook(self.top)
-        self.TabStrip1.place(relx=0.062, rely=0.071, relwidth=0.887, relheight=0.876)
+        self.TabStrip1.place(relx=0.022, rely=0.062, relwidth=0.956, relheight=0.876)
  #first tab
         self.TabStrip1__Tab1 = Frame(self.TabStrip1)
 
@@ -70,8 +70,64 @@ class Application_ui(Frame):
  #first tab end
  #second tab
         self.Tab2 = Frame(self.TabStrip1)
-        self.Tab2ButtonRun = Button(self.Tab2, text = "Run")
-        self.Tab2ButtonRun.place(relx=0.4,rely=0.5)
+
+        self.Tab2SubFrameList = []
+        self.Tab2LabelList = []
+        self.Tab2SubSubFrameList = []
+        self.Tab2ButtonList = []
+        self.Tab2strvarlist = []
+        self.Tab2lalalist = ["*"," "," "," ","*","*","*","*","*","*","└","┘","└","┘","*","└",
+                    "┘","└","┘","*","*","*","*","└","┘","└","─","─","┘","└","─","┘"]
+        # bits keyboard frm
+        self.Tab2frm = Frame(self.Tab2)
+
+        for FrmCnt in range(32/4):  # totalBitNum = 32
+
+            self.Tab2SubFrameList.append(Frame(self.Tab2frm, padding = '2 2 4 4'))  
+
+            for i in range(4):
+
+                self.Tab2SubSubFrameList.append(Frame(self.Tab2SubFrameList[FrmCnt]))
+
+                self.Tab2LabelList.append(Label(self.Tab2SubSubFrameList[4*FrmCnt + i],text=str(31-(4*FrmCnt + i)),font='Times 9 normal'))
+                #LabelList[FrmCnt].config()
+                self.Tab2LabelList[4*FrmCnt + i].pack(side=TOP)
+
+                #Buttons and their string vars
+                self.Tab2strvarlist.append(StringVar())
+                self.Tab2strvarlist[4*FrmCnt + i].set('0')
+                self.Tab2ButtonList.append(Button(self.Tab2SubSubFrameList[4*FrmCnt + i], textvariable=self.Tab2strvarlist[4*FrmCnt + i], width = 2))
+                
+                self.Tab2ButtonList[4*FrmCnt + i].pack()
+
+                Label(self.Tab2SubSubFrameList[4*FrmCnt + i], text = self.Tab2lalalist[4*FrmCnt + i], font='Times 13 normal').pack(side=BOTTOM)
+
+                self.Tab2SubSubFrameList[4*FrmCnt + i].pack(side=LEFT)
+
+            self.Tab2SubFrameList[FrmCnt].pack(side=LEFT)
+
+        self.Tab2frm.pack()
+
+        self.Tab2frm2 = Frame(self.Tab2)
+        self.Tab2frm2Sub1 = Frame(self.Tab2frm2)
+        #16进制文字框
+        self.Tab2e = Entry(self.Tab2frm2Sub1)
+        self.Tab2e.pack(side=LEFT)
+        #Confirm Button
+        self.Tab2Confirm_Button = Button(self.Tab2frm2Sub1,text="确认")
+        self.Tab2Confirm_Button.pack(side=LEFT)
+        #Clear Button
+        self.Tab2Clear_Button = Button(self.Tab2frm2Sub1,text="清零")
+        self.Tab2Clear_Button.pack(side=RIGHT)
+        self.Tab2frm2Sub1.pack(side=TOP)
+        #Option image
+        self.Tab2frm2Sub2 = Frame(self.Tab2frm2)
+        self.pic = PhotoImage(file = 'option.gif')
+        Label(self.Tab2frm2Sub2,image=self.pic,width=800).pack()
+        self.Tab2frm2Sub2.pack(side=BOTTOM)
+
+        self.Tab2frm2.pack()
+
         self.TabStrip1.add(self.Tab2, text='Option Checker')
  #second tab end
  #third tab

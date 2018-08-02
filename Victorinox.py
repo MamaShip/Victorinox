@@ -159,7 +159,9 @@ class Application(Application_ui):
 
     def ConfirmFile(self):
         self.Tab3FileList.append(self.Tab3path.get())
-        print self.Tab3FileList
+        self.Tab3Text.delete(0.0,END)
+        #print self.Tab3FileList
+        self.Tab3Text.insert(END, "\n".join(self.Tab3FileList))
 
     def MergeFile(self):
         output = open(r"result.bin","wb")

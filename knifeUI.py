@@ -148,10 +148,13 @@ class Application_ui(Frame):
         self.Tab3ButtonConfirm.pack(side=LEFT)
         self.Tab3frm.pack(side=TOP)
 
+        self.Tab3Text = Text(self.Tab3, height = 16)
+        self.Tab3Text.pack()
+
         self.Tab3frm2 = Frame(self.Tab3)
         self.Tab3ButtonMerge = Button(self.Tab3frm2, text = "确认合并")#.grid(row = 0, column = 0)
         self.Tab3ButtonMerge.pack()
-        self.Tab3frm2.pack(side=TOP)
+        self.Tab3frm2.pack(side=BOTTOM)
         self.TabStrip1.add(self.Tab3, text='File Linker')
  #third tab end
  #fourth tab
@@ -169,7 +172,9 @@ class Application_ui(Frame):
  #about tab
         self.TabX = Frame(self.TabStrip1)
         self.TabXLbl = Label(self.TabX, text="Listen's Swiss Army knife")
-        self.TabXLbl.place(relx=0.1,rely=0.5)
+        self.TabXLbl.pack()#place(relx=0.4,rely=0.5)
+        self.TabXLb2 = Label(self.TabX, text="ver 1.3.0")
+        self.TabXLb2.pack()#place(relx=0.5,rely=0.6)
         self.TabStrip1.add(self.TabX, text='About')
         
  #about tab end

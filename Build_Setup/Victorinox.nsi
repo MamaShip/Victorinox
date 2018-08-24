@@ -2,9 +2,9 @@
 
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "Victorinox"
-!define PRODUCT_VERSION "1.3.0"
+!define PRODUCT_VERSION "1.4.2"
 !define PRODUCT_PUBLISHER "Listen Li"
-!define PRODUCT_WEB_SITE "http://www.twisted-meadows.com"
+!define PRODUCT_WEB_SITE "https://www.twisted-meadows.com"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -26,7 +26,7 @@ SetCompressor lzma
 ; 欢迎页面
 !insertmacro MUI_PAGE_WELCOME
 ; 许可协议页面
-!insertmacro MUI_PAGE_LICENSE "..\..\..\Desktop\dd\License.txt"
+!insertmacro MUI_PAGE_LICENSE "..\License.txt"
 ; 安装目录选择页面
 !insertmacro MUI_PAGE_DIRECTORY
 ; 安装过程页面
@@ -49,7 +49,7 @@ SetCompressor lzma
 ; ------ MUI 现代界面定义结束 ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "Victorinox_Setup.exe"
+OutFile "SetupVictorinox.exe"
 InstallDir "$PROGRAMFILES\Victorinox"
 ShowInstDetails show
 ShowUnInstDetails show
@@ -57,7 +57,7 @@ ShowUnInstDetails show
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File /r "..\Tkinter_Tab_Layout\dist\Victorinox\*.*"
+  File /r "..\dist\Victorinox\*.*"
   CreateShortCut "$DESKTOP\Victorinox.lnk" "$INSTDIR\Victorinox.exe"
   CreateDirectory "$SMPROGRAMS\Victorinox"
   CreateShortCut "$SMPROGRAMS\Victorinox\Victorinox.lnk" "$INSTDIR\Victorinox.exe"

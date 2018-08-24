@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['Victorinox.py'],
-             pathex=['C:\\Users\\ListenLi.LITEON\\OneDrive - LITE-ON TECHNOLOGY CORP\\python\\Tkinter_Tab_Layout'],
+             pathex=['C:\\Users\\ListenLi.LITEON\\OneDrive - LITE-ON TECHNOLOGY CORP\\python\\Victorinox'],
              binaries=[],
              datas=[],
              hiddenimports=[],

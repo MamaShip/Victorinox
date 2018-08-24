@@ -27,7 +27,7 @@ class Application_ui(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.master.title("Listen's Victorinox")
-        self.master.geometry('880x380')
+        self.master.geometry('880x400')
         self.createWidgets()
  
     def createWidgets(self):
@@ -39,14 +39,13 @@ class Application_ui(Frame):
         self.TabStrip1.place(relx=0.022, rely=0.062, relwidth=0.956, relheight=0.876)
  #first tab
         self.TabStrip1__Tab1 = Frame(self.TabStrip1)
-
-        self.TabStrip1__Tab1Lbl = Label(self.TabStrip1__Tab1)
-        self.TabStrip1__Tab1Lbl.place(relx=0.1,rely=0.5)
-
-        self.TabStrip1__Tab1Title = Label(self.TabStrip1__Tab1,text='page                         wl',font='Times 12 normal')
+        self.Tab1TotalFrm = Frame(self.TabStrip1__Tab1)
+        # title : page <-> WL
+        self.TabStrip1__Tab1Title = Label(self.Tab1TotalFrm,\
+                                text='Page             <--->             WL  ',font='Times 12 normal')
         self.TabStrip1__Tab1Title.pack(side=TOP)
 
-        self.TabStrip1__Tab1frm = Frame(self.TabStrip1__Tab1)
+        self.TabStrip1__Tab1frm = Frame(self.Tab1TotalFrm)
 
         self.TabStrip1__Tab1PageNum = Entry(self.TabStrip1__Tab1frm)#, bd = 5,relief=SUNKEN)
         self.TabStrip1__Tab1PageNum.pack(side=LEFT)
@@ -66,7 +65,11 @@ class Application_ui(Frame):
 
         self.TabStrip1__Tab1frm.pack(side=TOP)
 
-        self.TabStrip1.add(self.TabStrip1__Tab1, text='Page_WL')
+        self.TabStrip1__Tab1Lbl = Label(self.Tab1TotalFrm)
+        self.TabStrip1__Tab1Lbl.pack()#place(relx=0.45,rely=0.5)
+
+        self.Tab1TotalFrm.place(relx=0.3,rely=0.3)
+        self.TabStrip1.add(self.TabStrip1__Tab1, text=' Page_WL ')
  #first tab end
  #second tab
         self.Tab2 = Frame(self.TabStrip1)
@@ -169,13 +172,60 @@ class Application_ui(Frame):
         self.Tab4ButtonConfirm.pack(side=BOTTOM)
         self.TabStrip1.add(self.Tab4, text='Binary Reader')
  #fourth tab end
+ #fifth tab
+        self.Tab5 = Frame(self.TabStrip1)
+        self.Tab5TotalFrm = Frame(self.Tab5)
+        self.Tab5frm1 = Frame(self.Tab5TotalFrm)
+        # PAA address part
+        self.Tab5Lbl1 = Label(self.Tab5frm1,text = "PAA addr:")
+        self.Tab5Lbl1.pack(side=LEFT)
+        self.Tab5paa = Entry(self.Tab5frm1)
+        self.Tab5paa.pack(side=LEFT)
+        #Confirm Button
+        self.Tab5Confirm_Button = Button(self.Tab5frm1, text = "确认")
+        self.Tab5Confirm_Button.pack(side=LEFT)
+        self.Tab5frm1.pack()
+        # translate addr part
+        self.Tab5frm2 = Frame(self.Tab5TotalFrm)
+        self.Tab5SubFrameList = []
+        self.Tab5LabelList = []
+        self.Tab5LabelContent = ['BLK','page','LUN','CE','CH','plane','frag']
+        self.Tab5AdrrEntryList = []
+        # 7 sub frame : 'blk','page','LUN','CE','CH','plane','frag'
+        for FrmCnt in range(7):  
+            self.Tab5SubFrameList.append(Frame(self.Tab5frm2, padding = '2 2 4 4'))
+            # label 
+            self.Tab5LabelList.append(Label(self.Tab5SubFrameList[FrmCnt],text=self.Tab5LabelContent[FrmCnt], font = 'Times 9 normal'))
+            self.Tab5LabelList[FrmCnt].pack()
+            # entry
+            self.Tab5AdrrEntryList.append( Entry(self.Tab5SubFrameList[FrmCnt], width = 4) )
+            self.Tab5AdrrEntryList[FrmCnt].pack()
+
+            self.Tab5SubFrameList[FrmCnt].pack(side=LEFT)
+        self.Tab5frm2.pack()
+        # row address part
+        self.Tab5frm3 = Frame(self.Tab5TotalFrm)
+        self.Tab5Lbl2 = Label(self.Tab5frm3,text = "row addr:")
+        self.Tab5Lbl2.pack(side=LEFT)
+        self.Tab5row = Entry(self.Tab5frm3)
+        self.Tab5row.pack(side=LEFT)
+        self.Tab5frm3.pack()
+
+        self.Tab5TotalFrm.place(relx=0.32,rely=0.3)
+
+        self.TabStrip1.add(self.Tab5, text='  PAA  ')
+ #fifth tab end
  #about tab
         self.TabX = Frame(self.TabStrip1)
-        self.TabXLbl = Label(self.TabX, text="Listen's Swiss Army knife")
-        self.TabXLbl.pack()#place(relx=0.4,rely=0.5)
-        self.TabXLb2 = Label(self.TabX, text="ver 1.3.0")
-        self.TabXLb2.pack()#place(relx=0.5,rely=0.6)
-        self.TabStrip1.add(self.TabX, text='About')
+        self.TabXfrm = Frame(self.TabX)
+        self.TabXLbl = Label(self.TabXfrm, text="Listen's Swiss Army knife")
+        self.TabXLbl.pack()
+        self.TabXLb2 = Label(self.TabXfrm, text="ver 1.4.2")
+        self.TabXLb2.pack()
+        self.TabXLb3 = Label(self.TabXfrm, text="Powered by Python Tkinter")
+        self.TabXLb3.pack()
+        self.TabXfrm.place(relx=0.4,rely=0.4)
+        self.TabStrip1.add(self.TabX, text=' About ')
         
  #about tab end
 

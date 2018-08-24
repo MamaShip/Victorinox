@@ -94,6 +94,20 @@ class Application(Application_ui):
         
         self.Tab4ButtonSelect['command'] = self.Tab4selectPath
         self.Tab4ButtonConfirm['command'] = self.Tab4ReadFile
+
+        # Tab5 var
+        self.Tab5paaAddr = StringVar()
+        self.Tab5paa['textvariable'] = self.Tab5paaAddr
+        self.Tab5paa.bind("<Return>",self.Tab5ConfirmHex)
+        self.Tab5Confirm_Button['command'] = self.Tab5ConfirmHex
+
+        self.Tab5AdrrDict = {}
+        for FrmCnt in range(7):
+            self.Tab5AdrrDict[self.Tab5LabelContent[FrmCnt]] = StringVar()
+            self.Tab5AdrrEntryList[FrmCnt]['textvariable'] = self.Tab5AdrrDict[self.Tab5LabelContent[FrmCnt]]
+            self.Tab5AdrrEntryList[FrmCnt].bind("<Return>",self.Tab5AddrTranstalte2PAA)
+        self.Tab5RowAddr = StringVar()
+        self.Tab5row['textvariable'] = self.Tab5RowAddr
 #tab1 func
     def toDecimal(self,num_str): # if input is heximal , transform to decimal
         if not num_str:
@@ -194,7 +208,53 @@ class Application(Application_ui):
             #print ll[1]*256+ll[0]
         f.close()
         output.close()
- 
+#tab5 func
+    def Tab5PAATranstalte2Addr(self,binary):
+        if(len(binary)>=31):
+            frag  = int(binary[-2:],2)
+            plane = int(binary[-3:-2],2)
+            ch    = int(binary[-5:-3],2)
+            ce    = int(binary[-8:-5],2)
+            lun   = int(binary[-9:-8],2)
+            page  = int(binary[-21:-9],2)
+            Lblock = int(binary[-30:-21],2)
+            self.Tab5AdrrDict['frag'].set(str(frag))
+            self.Tab5AdrrDict['plane'].set(str(plane))
+            self.Tab5AdrrDict['CH'].set(str(ch))
+            self.Tab5AdrrDict['CE'].set(str(ce))
+            self.Tab5AdrrDict['LUN'].set(str(lun))
+            self.Tab5AdrrDict['page'].set(str(page))
+            self.Tab5AdrrDict['BLK'].set(str(Lblock))
+            self.Tab5_Calc_Row(lun=lun,blk=Lblock,page=page)
+        else:
+            print "Addr is too short"
+
+    def Tab5ConfirmHex(self,event=None):
+        hexValue = self.Tab5paaAddr.get()
+        decimal = int(hexValue,16)
+        binary = bin(decimal)[2:]
+        self.Tab5PAATranstalte2Addr(binary)
+
+    def Tab5AddrTranstalte2PAA(self,event=None):
+        frag   = int(self.Tab5AdrrDict['frag'].get())
+        plane  = int(self.Tab5AdrrDict['plane'].get())
+        ch     = int(self.Tab5AdrrDict['CH'].get())
+        ce     = int(self.Tab5AdrrDict['CE'].get())
+        lun    = int(self.Tab5AdrrDict['LUN'].get())
+        page   = int(self.Tab5AdrrDict['page'].get())
+        Lblock = int(self.Tab5AdrrDict['BLK'].get())
+        val = (1 << 30) | (Lblock << 21) | (page << 9) | (lun << 8) | (ce << 5) | (ch << 3) | (plane << 2) | frag
+        val = '0x' + hex(val).upper()[2:]
+        self.Tab5paaAddr.set(val)
+        self.Tab5_Calc_Row(lun=lun,blk=Lblock,page=page)
+
+    def Tab5_Calc_Row(self,lun=0,blk=0,page=0):
+        row = (lun << 22) | (blk << 12) | page
+        row = '0x' + hex(row).upper()[2:]
+        self.Tab5RowAddr.set(row)
+    
+
+
 if __name__ == "__main__":
     top = Tk()
     Application(top).mainloop()

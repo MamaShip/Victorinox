@@ -35,10 +35,10 @@ class Application_ui(Frame):
  
         self.style = Style()
  
-        self.TabStrip1 = Notebook(self.top)
-        self.TabStrip1.place(relx=0.022, rely=0.062, relwidth=0.956, relheight=0.876)
+        self.MyNotebook = Notebook(self.top)
+        self.MyNotebook.place(relx=0.022, rely=0.062, relwidth=0.956, relheight=0.876)
  #first tab
-        self.TabStrip1__Tab1 = Frame(self.TabStrip1)
+        self.TabStrip1__Tab1 = Frame(self.MyNotebook)
         self.Tab1TotalFrm = Frame(self.TabStrip1__Tab1)
         # title : page <-> WL
         self.TabStrip1__Tab1Title = Label(self.Tab1TotalFrm,\
@@ -69,10 +69,10 @@ class Application_ui(Frame):
         self.TabStrip1__Tab1Lbl.pack()#place(relx=0.45,rely=0.5)
 
         self.Tab1TotalFrm.place(relx=0.3,rely=0.3)
-        self.TabStrip1.add(self.TabStrip1__Tab1, text=' Page_WL ')
+        self.MyNotebook.add(self.TabStrip1__Tab1, text=' Page_WL ')
  #first tab end
  #second tab
-        self.Tab2 = Frame(self.TabStrip1)
+        self.Tab2 = Frame(self.MyNotebook)
 
         self.Tab2SubFrameList = []
         self.Tab2LabelList = []
@@ -131,12 +131,12 @@ class Application_ui(Frame):
 
         self.Tab2frm2.pack()
 
-        self.TabStrip1.add(self.Tab2, text='Option Checker')
+        self.MyNotebook.add(self.Tab2, text='Option Checker')
  #second tab end
  #third tab
-        self.Tab3 = Frame(self.TabStrip1)
+        self.Tab3 = Frame(self.MyNotebook)
 
-        self.Tab3Lbl1 = Label(self.Tab3, text = "依次选择需要link的文件(确认)，最后按合并")#.grid(row = 0, column = 0)
+        self.Tab3Lbl1 = Label(self.Tab3, text = "用选择按钮，依次选择需要link的文件。通过确认按钮将其加入下方list，最后按合并")#.grid(row = 0, column = 0)
         self.Tab3Lbl1.pack(side=TOP)
 
         self.Tab3frm = Frame(self.Tab3)
@@ -145,9 +145,9 @@ class Application_ui(Frame):
         self.Tab3Lbl2.pack(side=LEFT)
         self.Tab3pathEntry = Entry(self.Tab3frm)#.grid(row = 1, column = 1)
         self.Tab3pathEntry.pack(side=LEFT)
-        self.Tab3ButtonSelect = Button(self.Tab3frm, text = "文件选择")#.grid(row = 1, column = 2)
+        self.Tab3ButtonSelect = Button(self.Tab3frm, text = "选择文件")#.grid(row = 1, column = 2)
         self.Tab3ButtonSelect.pack(side=LEFT)
-        self.Tab3ButtonConfirm = Button(self.Tab3frm, text = "确认文件")#.grid(row = 1, column = 3)
+        self.Tab3ButtonConfirm = Button(self.Tab3frm, text = "确认")#.grid(row = 1, column = 3)
         self.Tab3ButtonConfirm.pack(side=LEFT)
         self.Tab3frm.pack(side=TOP)
 
@@ -155,13 +155,13 @@ class Application_ui(Frame):
         self.Tab3Text.pack()
 
         self.Tab3frm2 = Frame(self.Tab3)
-        self.Tab3ButtonMerge = Button(self.Tab3frm2, text = "确认合并")#.grid(row = 0, column = 0)
+        self.Tab3ButtonMerge = Button(self.Tab3frm2, text = "合并")#.grid(row = 0, column = 0)
         self.Tab3ButtonMerge.pack()
         self.Tab3frm2.pack(side=BOTTOM)
-        self.TabStrip1.add(self.Tab3, text='File Linker')
+        self.MyNotebook.add(self.Tab3, text='File Linker')
  #third tab end
  #fourth tab
-        self.Tab4 = Frame(self.TabStrip1)
+        self.Tab4 = Frame(self.MyNotebook)
         self.Tab4Lbl1 = Label(self.Tab4,text = "bin file:")#.grid(row = 1, column = 0)
         self.Tab4Lbl1.pack()
         self.Tab4pathEntry = Entry(self.Tab4)#.grid(row = 1, column = 1)
@@ -170,10 +170,10 @@ class Application_ui(Frame):
         self.Tab4ButtonSelect.pack()
         self.Tab4ButtonConfirm = Button(self.Tab4, text = "Read")#.grid(row = 1, column = 3)
         self.Tab4ButtonConfirm.pack(side=BOTTOM)
-        self.TabStrip1.add(self.Tab4, text='Binary Reader')
+        self.MyNotebook.add(self.Tab4, text='Binary Reader')
  #fourth tab end
  #fifth tab
-        self.Tab5 = Frame(self.TabStrip1)
+        self.Tab5 = Frame(self.MyNotebook)
         self.Tab5TotalFrm = Frame(self.Tab5)
         self.Tab5frm1 = Frame(self.Tab5TotalFrm)
         # PAA address part
@@ -213,19 +213,71 @@ class Application_ui(Frame):
 
         self.Tab5TotalFrm.place(relx=0.32,rely=0.3)
 
-        self.TabStrip1.add(self.Tab5, text='  PAA  ')
+        self.MyNotebook.add(self.Tab5, text='  PAA  ')
  #fifth tab end
+ #sixth tab
+        self.Tab6 = Frame(self.MyNotebook)
+        self.Tab6frm = Frame(self.Tab6, padding = '2 10 2 2')
+
+        # description
+        self.Tab6Lbl1 = Label(self.Tab6frm,text = "输入log筛选规则：以*代替数据位，？代替忽略位，其余为必要位")
+        self.Tab6Lbl1.pack(side=TOP)
+
+        self.Tab6subfrm1 = Frame(self.Tab6frm)
+        # insert item entry
+        self.Tab6item = Entry(self.Tab6subfrm1, width = 60)
+        self.Tab6item.pack(side=LEFT)
+        # Insert Button
+        self.Tab6Insert_Button = Button(self.Tab6subfrm1, text = "加入规则")
+        self.Tab6Insert_Button.pack(side=LEFT)
+        self.Tab6subfrm1.pack()
+
+        self.Tab6subfrm2 = Frame(self.Tab6frm)
+        # Listbox to show existing rules
+        self.Tab6ListBox = Listbox(self.Tab6subfrm2, width = 60)#, selectmode = MULTIPLE)
+        for i in ['rules here']:
+            self.Tab6ListBox.insert(END,i)
+        self.Tab6ListBox.pack(side = LEFT)
+
+        self.Tab6ListButtonFrm = Frame(self.Tab6subfrm2)
+        # Delete Button
+        self.Tab6Delete_Button = Button(self.Tab6ListButtonFrm, text = "删除该项")
+        self.Tab6Delete_Button.pack()
+        # Clear Button
+        self.Tab6Clear_Button = Button(self.Tab6ListButtonFrm, text = "清除全部")
+        self.Tab6Clear_Button.pack()
+        self.Tab6ListButtonFrm.pack(side=LEFT)
+
+        self.Tab6subfrm2.pack()
+
+        self.Tab6subfrm3 = Frame(self.Tab6frm, padding = '2 2 2 10')
+        self.Tab6Lbl2 = Label(self.Tab6subfrm3,text = "待解析文件:")
+        self.Tab6Lbl2.pack(side=LEFT)
+        self.Tab6pathEntry = Entry(self.Tab6subfrm3)
+        self.Tab6pathEntry.pack(side=LEFT)
+        self.Tab6ButtonSelect = Button(self.Tab6subfrm3, text = "选择文件")
+        self.Tab6ButtonSelect.pack(side=LEFT)
+
+        self.Tab6subfrm3.pack()
+
+        self.Tab6ButtonStart = Button(self.Tab6frm, text = "执行")
+        self.Tab6ButtonStart.pack()
+
+        self.Tab6frm.pack()
+
+        self.MyNotebook.add(self.Tab6, text='Log Finder')
+ #sixth tab end
  #about tab
-        self.TabX = Frame(self.TabStrip1)
+        self.TabX = Frame(self.MyNotebook)
         self.TabXfrm = Frame(self.TabX)
         self.TabXLbl = Label(self.TabXfrm, text="Listen's Swiss Army knife")
         self.TabXLbl.pack()
-        self.TabXLb2 = Label(self.TabXfrm, text="ver 1.4.2")
+        self.TabXLb2 = Label(self.TabXfrm, text="ver 1.5.0")
         self.TabXLb2.pack()
         self.TabXLb3 = Label(self.TabXfrm, text="Powered by Python Tkinter")
         self.TabXLb3.pack()
         self.TabXfrm.place(relx=0.4,rely=0.4)
-        self.TabStrip1.add(self.TabX, text=' About ')
+        self.MyNotebook.add(self.TabX, text=' About ')
         
  #about tab end
 

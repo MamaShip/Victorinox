@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
  
-import sys,os
+import sys
+import os
 from knifeUI import Application_ui
+from lib.utils import Pick_Your_Log
+
 if sys.version_info[0] == 2:
     from Tkinter import *
     from tkFont import Font
@@ -98,7 +101,7 @@ class Application(Application_ui):
         # Tab5 var
         self.Tab5paaAddr = StringVar()
         self.Tab5paa['textvariable'] = self.Tab5paaAddr
-        self.Tab5paa.bind("<Return>",self.Tab5ConfirmHex)
+        self.Tab5paa.bind("<Return>", self.Tab5ConfirmHex)
         self.Tab5Confirm_Button['command'] = self.Tab5ConfirmHex
 
         self.Tab5AdrrDict = {}
@@ -108,6 +111,23 @@ class Application(Application_ui):
             self.Tab5AdrrEntryList[FrmCnt].bind("<Return>",self.Tab5AddrTranstalte2PAA)
         self.Tab5RowAddr = StringVar()
         self.Tab5row['textvariable'] = self.Tab5RowAddr
+
+        # Tab6 var
+        self.Tab6_new_rule = StringVar()
+        self.Tab6item['textvariable'] = self.Tab6_new_rule
+        self.Tab6item.bind("<Return>", self.Tab6_insert_rule)
+        self.Tab6Insert_Button['command'] = self.Tab6_insert_rule
+
+        self.Tab6Delete_Button['command'] = self.Tab6_delete_item
+        self.Tab6Clear_Button['command'] = self.Tab6_delete_all
+        
+        self.Tab6_path = StringVar()
+        self.Tab6pathEntry['textvariable'] = self.Tab6_path
+        self.Tab6ButtonSelect['command'] = self.Tab6_select_path
+
+        self.Tab6ButtonStart['command'] = self.Tab6_start_action
+
+
 #tab1 func
     def toDecimal(self,num_str): # if input is heximal , transform to decimal
         if not num_str:
@@ -229,13 +249,13 @@ class Application(Application_ui):
         else:
             print "Addr is too short"
 
-    def Tab5ConfirmHex(self,event=None):
+    def Tab5ConfirmHex(self, event=None):
         hexValue = self.Tab5paaAddr.get()
         decimal = int(hexValue,16)
         binary = bin(decimal)[2:]
         self.Tab5PAATranstalte2Addr(binary)
 
-    def Tab5AddrTranstalte2PAA(self,event=None):
+    def Tab5AddrTranstalte2PAA(self, event=None):
         frag   = int(self.Tab5AdrrDict['frag'].get())
         plane  = int(self.Tab5AdrrDict['plane'].get())
         ch     = int(self.Tab5AdrrDict['CH'].get())
@@ -248,11 +268,39 @@ class Application(Application_ui):
         self.Tab5paaAddr.set(val)
         self.Tab5_Calc_Row(lun=lun,blk=Lblock,page=page)
 
-    def Tab5_Calc_Row(self,lun=0,blk=0,page=0):
+    def Tab5_Calc_Row(self, lun = 0, blk = 0, page = 0):
         row = (lun << 22) | (blk << 12) | page
         row = '0x' + hex(row).upper()[2:]
         self.Tab5RowAddr.set(row)
+#tab6 func
+    def Tab6_insert_rule(self, event=None):
+        item = self.Tab6_new_rule.get()
+        if item:
+            self.Tab6ListBox.insert(END, item)
+        
+    def Tab6_delete_item(self):
+        idx = self.Tab6ListBox.curselection()
+        if idx:
+            self.Tab6ListBox.delete(idx)
     
+    def Tab6_delete_all(self):
+        self.Tab6ListBox.delete(0, END)
+
+    def Tab6_select_path(self):
+        path_ = askopenfilename()
+        self.Tab6_path.set(path_)
+
+    def Tab6_start_action(self):
+        num = self.Tab6ListBox.size()
+        rule_list = []
+        for i in range(num):
+            rule_list.append(self.Tab6ListBox.get(i))
+        if len(rule_list) < 1:
+            print("No rules!")
+        else:
+            filePath = self.Tab6_path.get()
+            if filePath:
+                Pick_Your_Log(filePath, rule_list)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "Victorinox"
-!define PRODUCT_VERSION "1.4.2"
+!define PRODUCT_VERSION "1.5.0"
 !define PRODUCT_PUBLISHER "Listen Li"
 !define PRODUCT_WEB_SITE "https://www.twisted-meadows.com"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"

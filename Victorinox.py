@@ -301,6 +301,7 @@ class Application(Application_ui):
             filePath = self.Tab6_path.get()
             if filePath:
                 Pick_Your_Log(filePath, rule_list)
+                self.Tab6_path.set("处理完毕！")
 
 
 if __name__ == "__main__":
